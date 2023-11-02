@@ -10,7 +10,7 @@ namespace UI
         public ItemModel model { get; protected set; }
         public ItemView view => _view;
 
-        public void Initialize(ItemInfo itemInfo, float condition)
+        public virtual void Initialize(ItemInfo itemInfo, float condition)
         {
             gameObject.name = itemInfo.itemName + "Obj";
             

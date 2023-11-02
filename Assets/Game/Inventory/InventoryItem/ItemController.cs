@@ -1,12 +1,13 @@
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ItemsContainer
+namespace Inventory
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class ItemController : UI.ItemController, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class ItemController : UI.ItemController, /*IDragHandler, IBeginDragHandler, IEndDragHandler,*/ IPointerClickHandler
     {
-        private RectTransform rectTransform;
+        /*private RectTransform rectTransform;
         private Canvas canvas;
         private CanvasGroup canvasGroup;
 
@@ -15,8 +16,13 @@ namespace ItemsContainer
             rectTransform = GetComponent<RectTransform>();
             canvas = GetComponentInParent<Canvas>();
             canvasGroup = GetComponent<CanvasGroup>();
+        }*/
+        public override void Initialize(ItemInfo itemInfo, float condition)
+        {
+            base.Initialize(itemInfo, condition); 
+            view.ScaleImage(itemInfo.size);
         }
-        public void OnBeginDrag(PointerEventData eventData)
+        /*public void OnBeginDrag(PointerEventData eventData)
         {
             rectTransform.parent.GetComponent<Slot>().ReleaseSlot();
             rectTransform.parent.SetAsLastSibling();
@@ -31,10 +37,12 @@ namespace ItemsContainer
         {
             transform.localPosition = Vector3.zero;
             canvasGroup.blocksRaycasts = true;
+            rectTransform.parent.GetComponent<Slot>().OccupySlot();
+        }*/
 
-            var containerSlot = rectTransform.parent.GetComponent<Slot>();
-            
-            if (containerSlot != null) containerSlot.OccupySlot();
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Debug.Log("Return item to container");
         }
     }
 }

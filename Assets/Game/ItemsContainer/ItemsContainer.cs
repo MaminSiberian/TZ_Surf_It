@@ -13,10 +13,11 @@ namespace ItemsContainer
         [SerializeField] private GameObject grid;
 
         private List<Slot> slots = new List<Slot>();
+        private float startCondition = 1f;
 
-        private void Awake()
+        private void Start()
         {
-            GenerateSlots();
+            GetSlots();
             CreateRandomItems();
         }
         [Button]
@@ -27,16 +28,17 @@ namespace ItemsContainer
             for (int i = 0; i < numberOfItems; i++)
             {
                 if (i >= slots.Count) break;
-                CreateItem(items[Random.Range(0, items.Length)], slots[i].transform);
+                CreateItem(items[Random.Range(0, items.Length)], startCondition, slots[i].transform);
                 slots[i].OccupySlot();
             }
         }
-        private void CreateItem(ItemInfo info, Transform parent)
+        private ItemController CreateItem(ItemInfo info, float condition, Transform parent)
         {
             var itemObj = Instantiate(itemPrefab, parent);
-            itemPrefab.Initialize(info, 1);
+            itemObj.Initialize(info, condition);
+            return itemObj;
         }
-        private void GenerateSlots()
+        private void GetSlots()
         {
             slots = grid.GetComponentsInChildren<Slot>().ToList();
 

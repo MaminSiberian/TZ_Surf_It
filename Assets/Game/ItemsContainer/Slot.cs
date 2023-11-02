@@ -3,9 +3,9 @@ using UnityEngine.EventSystems;
 
 namespace ItemsContainer
 {
-    public class Slot : UI.Slot
+    public class Slot : UI.Slot, IDropHandler
     {
-        public override void OnDrop(PointerEventData eventData)
+        public void OnDrop(PointerEventData eventData)
         {
             var item = eventData.pointerDrag.GetComponent<ItemController>();
 

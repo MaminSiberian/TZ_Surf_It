@@ -5,11 +5,9 @@ public class ItemInfo : ScriptableObject
 {
     [SerializeField] private string _itemName;
     [SerializeField] private Sprite _sprite;
-    [SerializeField] private int _sizeX;
-    [SerializeField] private int _sizeY;
+    [SerializeField] private Vector2Int _size;
 
     public string itemName => _itemName;
     public Sprite sprite => _sprite;
-    public int sizeX => _sizeX;
-    public int sizeY => _sizeY;
+    public Vector2Int size => _size;
 }

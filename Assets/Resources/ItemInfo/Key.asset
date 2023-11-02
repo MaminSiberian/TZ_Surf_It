@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemName: Key
   _sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  _sizeX: 1
-  _sizeY: 1
+  _size: {x: 1, y: 1}
