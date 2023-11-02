@@ -1,6 +1,7 @@
 using UnityEngine;
 using NaughtyAttributes;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace Inventory
 {
@@ -24,6 +25,7 @@ namespace Inventory
             {
                 if (i >= slots.Count) break;
                 CreateItem(items[Random.Range(0, items.Length)], slots[i].transform);
+                slots[i].OccupySlot();
             }
         }
         private void CreateItem(ItemInfo info, Transform parent)
