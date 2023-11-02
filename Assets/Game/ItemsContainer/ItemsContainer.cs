@@ -8,7 +8,7 @@ namespace Inventory
     public class ItemsContainer : MonoBehaviour
     {
         [SerializeField] private int numberOfItems = 4;
-        [SerializeField] private Item itemPrefab;
+        [SerializeField] private ItemController itemPrefab;
         [SerializeField] private List<Slot> slots = new List<Slot>();
 
         private void Awake()

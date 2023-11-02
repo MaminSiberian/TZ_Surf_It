@@ -6,7 +6,7 @@ using NaughtyAttributes;
 public class ItemTester : MonoBehaviour
 {
     [SerializeField] private RectTransform itemParent;
-    [SerializeField] private Item itemPrefab;
+    [SerializeField] private ItemController itemPrefab;
 
     [Button]
     private void CreateEveryItem()

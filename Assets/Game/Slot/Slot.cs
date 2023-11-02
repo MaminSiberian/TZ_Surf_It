@@ -18,7 +18,7 @@ namespace Inventory
         }
         public void OnDrop(PointerEventData eventData)
         {
-            var item = eventData.pointerDrag.GetComponent<Item>();
+            var item = eventData.pointerDrag.GetComponent<ItemController>();
 
             if (item == null || !isVacant) return;
 
