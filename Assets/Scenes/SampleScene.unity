@@ -3452,6 +3452,42 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1530983210255900086, guid: 33877c6600c758141b89c87f940d6a57, type: 3}
   m_PrefabInstance: {fileID: 532971140}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &546308424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 546308425}
+  m_Layer: 5
+  m_Name: Items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &546308425
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546308424}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2105754484}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &550679080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7994,7 +8030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc7595ae5437cbe46852fad7dc9f64fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfItems: 2
+  numberOfItems: 4
   itemPrefab: {fileID: 1032531658790600566, guid: 1d69442c982c6234e99401d7b2e20af2, type: 3}
   grid: {fileID: 955432212}
 --- !u!1 &1347750775
@@ -11972,6 +12008,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 130283719}
+  - {fileID: 546308425}
   - {fileID: 1872862188}
   m_Father: {fileID: 1949686666}
   m_RootOrder: -1
@@ -11995,6 +12032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 8841371992940926772, guid: 1cf6197875b11ae49b28b70501688fc4, type: 3}
   grid: {fileID: 130283718}
+  itemParent: {fileID: 546308425}
 --- !u!224 &2109376036 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1530983210255900086, guid: 7e8c2a64f20cd5246893ede13f8ef14c, type: 3}
