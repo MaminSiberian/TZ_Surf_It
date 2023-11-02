@@ -1,8 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
-namespace Inventory
+namespace UI
 {
     [RequireComponent(typeof(CanvasGroup))]
     public abstract class ItemController : MonoBehaviour

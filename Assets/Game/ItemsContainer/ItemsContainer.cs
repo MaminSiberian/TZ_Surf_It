@@ -2,14 +2,17 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Linq;
 
-namespace Inventory
+namespace ItemsContainer
 {
     public class ItemsContainer : MonoBehaviour
     {
         [SerializeField] private int numberOfItems = 4;
         [SerializeField] private ItemController itemPrefab;
-        [SerializeField] private List<Slot> slots = new List<Slot>();
+        [SerializeField] private GameObject grid;
+
+        private List<Slot> slots = new List<Slot>();
 
         private void Awake()
         {
@@ -35,6 +38,8 @@ namespace Inventory
         }
         private void GenerateSlots()
         {
+            slots = grid.GetComponentsInChildren<Slot>().ToList();
+
             foreach (var slot in slots)
             {
                 slot.ReleaseSlot();

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Inventory
+namespace ItemsContainer
 {
-    public class ContainerItemView : ItemView
+    public class ItemView : UI.ItemView
     {
         public override void Initialize(ItemInfo itemInfo, float condition)
         {

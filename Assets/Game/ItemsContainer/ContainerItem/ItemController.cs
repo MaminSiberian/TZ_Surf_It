@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Inventory
+namespace ItemsContainer
 {
-    public class ContainerItemController : ItemController, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class ItemController : UI.ItemController, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         private RectTransform rectTransform;
         private Canvas canvas;
@@ -17,7 +17,7 @@ namespace Inventory
         }
         public void OnBeginDrag(PointerEventData eventData)
         {
-            rectTransform.parent.GetComponent<Slot>().ReleaseSlot();
+            rectTransform.parent.GetComponent<UI.Slot>().ReleaseSlot();
             rectTransform.parent.SetAsLastSibling();
             canvasGroup.blocksRaycasts = false;
         }
@@ -30,7 +30,7 @@ namespace Inventory
         {
             transform.localPosition = Vector3.zero;
             canvasGroup.blocksRaycasts = true;
-            rectTransform.parent.GetComponent<Slot>().OccupySlot();
+            rectTransform.parent.GetComponent<UI.Slot>().OccupySlot();
         }
     }
 }

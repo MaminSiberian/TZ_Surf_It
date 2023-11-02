@@ -1,12 +1,10 @@
-using Inventory;
-using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 
 public class ItemTester : MonoBehaviour
 {
     [SerializeField] private RectTransform itemParent;
-    [SerializeField] private ItemController itemPrefab;
+    [SerializeField] private ItemsContainer.ItemController itemPrefab;
 
     [Button]
     private void CreateEveryItem()

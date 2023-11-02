@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Inventory
+namespace UI
 {
     public class ItemModel
     {
