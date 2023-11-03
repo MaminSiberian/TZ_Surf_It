@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 namespace Inventory
 {
@@ -26,38 +27,48 @@ namespace Inventory
         }
         public void AddItemToInventory(UI.ItemController item, Slot slot)
         {
-            /*if (!CanAdd(item, slot))
-            {
-                Debug.Log("Can`t add item!");
-                return;
-            }*/
             var newItem = CreateItem(item.model.itemInfo, item.model.condition, slot.transform);
             items.Add(newItem);
             model.AddItem(newItem.model, slot);
             newItem.transform.SetParent(itemParent);
             RequiredSlots(slot, item.model.size).ForEach(slot => slot.OccupySlot());
             Destroy(item.gameObject);
+            items.ForEach(i => Debug.Log(i));
         }
         public void RemoveItemFromInventory(ItemController item)
         {
             Slot slot = model.itemsInInventory[item.model];
             RequiredSlots(slot, item.model.size).ForEach(slot => slot.ReleaseSlot());
+            items.Remove(item);
         }
         public void ClearInventory()
         {
+            items.ForEach(i => Destroy(i.gameObject));
             slots.ForEach(s => s.ReleaseSlot());
-            items.ForEach(i => Destroy(i));
             items.Clear();
             model.ClearInventory();
         }
         public void SaveInventory()
         {
-            //save
+            InventorySaveManager.SaveInventoryData(model.itemsInInventory);
         }
         public void LoadInventory()
         {
             ClearInventory();
-            //load
+            var data = InventorySaveManager.LoadInventoryData();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                var key = data.ElementAt(i).Key;
+                var value = data.ElementAt(i).Value;
+                var item = CreateItem(key.itemInfo, key.condition, value.transform);
+
+                items.Add(item);
+                model.AddItem(key, value);
+                item.transform.SetParent(itemParent);
+                RequiredSlots(value, item.model.size).ForEach(slot => slot.OccupySlot());
+            }
+
         }
         public void ReturnItemToContainer(ItemController item)
         {
