@@ -89,32 +89,31 @@ namespace Inventory
         {
             if (!slot.isVacant) return false;
 
-            return !RequiredSlots(slot, item.model.size).Any(s => !s.isVacant);
+            List<Slot> reqSlots = RequiredSlots(slot, item.model.size);
+
+            if (reqSlots.Count < item.model.size.x * item.model.size.y) return false;
+
+            return !reqSlots.Any(s => !s.isVacant);
         }
         private List<Slot> RequiredSlots(Slot firstSlot, Vector2Int size)
         {
             List<Slot> requiredSlots = new List<Slot>();
-            requiredSlots.Add(firstSlot);
 
             foreach (Slot _slot in slots)
             {
-                for (int i = 1; i < size.x; i++)
+                for (int x = 1; x <= size.x; x++)
                 {
-                    if (_slot.transform.localPosition.y == firstSlot.transform.localPosition.y
-                        && _slot.transform.localPosition.x == firstSlot.transform.localPosition.x + localSlotSize * i)
+                    for (int y = 1; y <= size.y; y++)
                     {
-                        requiredSlots.Add(_slot);
-                    }
-                }
-                for (int i = 1; i < size.y; i++)
-                {
-                    if (_slot.transform.localPosition.x == firstSlot.transform.localPosition.x
-                        && _slot.transform.localPosition.y == firstSlot.transform.localPosition.y - localSlotSize * i)
-                    {
-                        requiredSlots.Add(_slot);
+                        if (_slot.transform.localPosition.x == firstSlot.transform.localPosition.x + localSlotSize * (x - 1)
+                            && _slot.transform.localPosition.y == firstSlot.transform.localPosition.y - localSlotSize * (y - 1))
+                        {
+                            requiredSlots.Add(_slot);
+                        }
                     }
                 }
             }
+            requiredSlots = requiredSlots.Distinct().ToList();
             return requiredSlots;
         }
     }
