@@ -17,7 +17,7 @@ namespace ItemsContainer
         private void Start()
         {
             GetSlots();
-            CreateRandomItems();
+            AddRandomItems();
         }
         public void AddItem(ItemInfo info, float condition)
         {
@@ -28,7 +28,7 @@ namespace ItemsContainer
             slot.OccupySlot();
         }
         [Button]
-        public void CreateRandomItems()
+        public void AddRandomItems()
         {
             var items = Resources.LoadAll<ItemInfo>("ItemInfo/");
 

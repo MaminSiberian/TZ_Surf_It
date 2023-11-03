@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625786acfb6ae7140a44c97e0d36208e, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  _itemName: Sword
+  _itemName: Sword 3x1
   _sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   _size: {x: 3, y: 1}

@@ -26,11 +26,11 @@ namespace Inventory
         }
         public void AddItemToInventory(UI.ItemController item, Slot slot)
         {
-            if (!CanAdd(item, slot))
+            /*if (!CanAdd(item, slot))
             {
                 Debug.Log("Can`t add item!");
                 return;
-            }
+            }*/
             var newItem = CreateItem(item.model.itemInfo, item.model.condition, slot.transform);
             items.Add(newItem);
             model.AddItem(newItem.model, slot);

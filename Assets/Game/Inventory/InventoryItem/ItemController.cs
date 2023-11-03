@@ -1,4 +1,3 @@
-using System.Drawing;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -37,11 +36,16 @@ namespace Inventory
         public void OnEndDrag(PointerEventData eventData)
         {
             canvasGroup.blocksRaycasts = true;
+            ReturnToSlot();
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             inventory.ReturnItemToContainer(this);
+        }
+        private void ReturnToSlot()
+        {
+            inventory.AddItemToInventory(this, inventory.model.itemsInInventory[model]);
         }
     }
 }
