@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 namespace Inventory
 {
@@ -23,12 +22,13 @@ namespace Inventory
             container = FindAnyObjectByType<ItemsContainer.ItemsContainer>();
             model = new InventoryModel();
             GetSlots();
-            //LoadInventory();
+            LoadInventory();
         }
         public void AddItemToInventory(UI.ItemController item, Slot slot)
         {
             var newItem = CreateItem(item.model.itemInfo, item.model.condition, slot.transform);
-            Destroy(item.gameObject);
+
+            item.Deactivate();
             model.RemoveItem(item.model);
 
             items.Add(newItem);

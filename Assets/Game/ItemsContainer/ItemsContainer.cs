@@ -10,6 +10,7 @@ namespace ItemsContainer
     {
         [SerializeField] private int numberOfItems = 4;
         [SerializeField] private ItemController itemPrefab;
+        [SerializeField] private UI.ItemPool pool;
         [SerializeField] private GameObject grid;
 
         private List<Slot> slots = new List<Slot>();
@@ -39,7 +40,8 @@ namespace ItemsContainer
         }
         private ItemController CreateItem(ItemInfo info, float condition, Transform parent)
         {
-            var itemObj = Instantiate(itemPrefab, parent);
+            var itemObj = pool.GetContainerItem(parent);
+            itemObj.gameObject.SetActive(true);
             itemObj.Initialize(info, condition);
             return itemObj;
         }

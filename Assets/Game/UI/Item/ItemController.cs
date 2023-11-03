@@ -9,6 +9,12 @@ namespace UI
 
         public ItemModel model { get; protected set; }
         public ItemView view => _view;
+        private Transform pool;
+
+        protected virtual void Awake()
+        {
+            pool = FindAnyObjectByType<ItemPool>().transform;
+        }
 
         public virtual void Initialize(ItemInfo itemInfo, float condition)
         {
@@ -16,6 +22,11 @@ namespace UI
             
             model = new ItemModel(itemInfo, condition);
             view.Initialize(itemInfo, condition);
-        }       
+        }
+        public void Deactivate()
+        {
+            transform.SetParent(pool);
+            gameObject.SetActive(false);
+        }
     }
 }

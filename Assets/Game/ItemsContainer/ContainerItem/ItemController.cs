@@ -10,11 +10,16 @@ namespace ItemsContainer
         private Canvas canvas;
         private CanvasGroup canvasGroup;
 
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             rectTransform = GetComponent<RectTransform>();
-            canvas = GetComponentInParent<Canvas>();
             canvasGroup = GetComponent<CanvasGroup>();
+            canvas = GetComponentInParent<Canvas>();
+        }
+        private void OnEnable()
+        {
+            canvasGroup.blocksRaycasts = true;
         }
         public void OnBeginDrag(PointerEventData eventData)
         {
@@ -24,6 +29,7 @@ namespace ItemsContainer
         }
         public void OnDrag(PointerEventData eventData)
         {
+            if (canvas == null) canvas = GetComponentInParent<Canvas>();
             rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
         }
 

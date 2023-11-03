@@ -11,8 +11,9 @@ namespace Inventory
         private Canvas canvas;
         private CanvasGroup canvasGroup;
 
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             inventory = GetComponentInParent<InventoryController>();
             rectTransform = GetComponent<RectTransform>();
             canvas = GetComponentInParent<Canvas>();
