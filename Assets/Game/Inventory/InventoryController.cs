@@ -170,21 +170,25 @@ namespace Inventory
             foreach (var slot in slots)
             {
                 Vector3 slotPos = slot.transform.localPosition;
-                if ((slotPos.x == _slotPos.x
-                    || slotPos.x == _slotPos.x + localSlotSize
-                    || slotPos.x == _slotPos.x - localSlotSize)
-                    && (slotPos.y == _slotPos.y + localSlotSize
-                    || slotPos.y == _slotPos.y - localSlotSize))
+
+                for (int i = 1; i < 3; i++)
                 {
-                    neighbourSlots.Add(slot);
-                }
-                if ((slotPos.y == _slotPos.y 
-                    || slotPos.y == _slotPos.y + localSlotSize
-                    || slotPos.y == _slotPos.y - localSlotSize)
-                    && (slotPos.x == _slotPos.x + localSlotSize
-                    || slotPos.x == _slotPos.x - localSlotSize))
-                {
-                    neighbourSlots.Add(slot);
+                    if ((slotPos.x == _slotPos.x
+                        || slotPos.x == _slotPos.x + localSlotSize * i
+                        || slotPos.x == _slotPos.x - localSlotSize * i)
+                        && (slotPos.y == _slotPos.y + localSlotSize * i
+                        || slotPos.y == _slotPos.y - localSlotSize * i))
+                    {
+                        neighbourSlots.Add(slot);
+                    }
+                    if ((slotPos.y == _slotPos.y
+                        || slotPos.y == _slotPos.y + localSlotSize * i
+                        || slotPos.y == _slotPos.y - localSlotSize * i)
+                        && (slotPos.x == _slotPos.x + localSlotSize * i
+                        || slotPos.x == _slotPos.x - localSlotSize * i))
+                    {
+                        neighbourSlots.Add(slot);
+                    }
                 }
             }
             return neighbourSlots.FirstOrDefault(s => CanAdd(size, s));
