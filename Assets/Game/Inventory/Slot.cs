@@ -28,10 +28,15 @@ namespace Inventory
         private void GetInventoryItem(PointerEventData eventData)
         {
             var item = eventData.pointerDrag.GetComponent<ItemController>();
-            if (item == null || inventory.CanAdd(item, this)) return;
+            if (item == null) return;
 
-            item.transform.SetParent(transform);
-            item.transform.localPosition = Vector3.zero;
+            if (!inventory.CanAdd(item, this))
+            {
+                inventory.AddItemToInventory(item, inventory.model.itemsInInventory[item.model]);
+                return;
+            }
+
+            inventory.AddItemToInventory(item, this);
             OccupySlot();
         }
     }

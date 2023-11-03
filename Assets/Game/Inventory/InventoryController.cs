@@ -10,7 +10,7 @@ namespace Inventory
         [SerializeField] private GameObject grid;
         [SerializeField] private Transform itemParent;
 
-        private InventoryModel model;
+        public InventoryModel model {  get; private set; }
         private List<Slot> slots = new List<Slot>();
         private List<ItemController> items = new List<ItemController>();
 
@@ -42,8 +42,6 @@ namespace Inventory
         {
             Slot slot = model.itemsInInventory[item.model];
             RequiredSlots(slot, item.model.size).ForEach(slot => slot.ReleaseSlot());
-            model.RemoveItem(item.model);
-            Destroy(item.gameObject);
         }
         public void ClearInventory()
         {
@@ -65,6 +63,8 @@ namespace Inventory
         {
             container.AddItem(item.model.itemInfo, item.model.condition);
             RemoveItemFromInventory(item);
+            model.RemoveItem(item.model);
+            Destroy(item.gameObject);
         }
         private void GetSlots()
         {
