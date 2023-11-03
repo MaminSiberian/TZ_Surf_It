@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 namespace Inventory
 {
@@ -26,6 +27,8 @@ namespace Inventory
             GetSlots();
             LoadInventory();
         }
+
+        #region inventory
         public void AddItemToInventory(UI.ItemController item, Slot slot)
         {
             var newItem = CreateItem(item.model.itemInfo, item.model.condition, slot.transform);
@@ -52,6 +55,16 @@ namespace Inventory
             items.Clear();
             model.ClearInventory();
         }
+        public void ReturnItemToContainer(ItemController item)
+        {
+            container.AddItem(item.model.itemInfo, item.model.condition);
+            RemoveItemFromInventory(item);
+            model.RemoveItem(item.model);
+            item.Deactivate();
+        }
+        #endregion
+
+        #region save_load
         public void SaveInventory()
         {
             List<ItemData> data = new List<ItemData>();
@@ -89,22 +102,9 @@ namespace Inventory
                 item.transform.SetParent(itemParent);
                 RequiredSlots(slot, item.model.size).ForEach(slot => slot.OccupySlot());
             }
+        }
+        #endregion
 
-        }
-        public void ReturnItemToContainer(ItemController item)
-        {
-            container.AddItem(item.model.itemInfo, item.model.condition);
-            RemoveItemFromInventory(item);
-            model.RemoveItem(item.model);
-            item.Deactivate();
-        }
-        private void GetSlots()
-        {
-            slots = grid.GetComponentsInChildren<Slot>().ToList();
-            slots.ForEach(slot => slot.ReleaseSlot());
-
-            localSlotSize = Mathf.Abs(Vector2.Distance(slots[0].transform.localPosition, slots[1].transform.localPosition));
-        }
         private ItemController CreateItem(ItemInfo info, float condition, Transform parent)
         {
             var itemObj = pool.GetInventoryItem(parent);
@@ -118,13 +118,22 @@ namespace Inventory
 
             return itemObj;
         }
-        public bool CanAdd(UI.ItemController item, Slot slot)
+
+        #region slots
+        private void GetSlots()
+        {
+            slots = grid.GetComponentsInChildren<Slot>().ToList();
+            slots.ForEach(slot => slot.ReleaseSlot());
+
+            localSlotSize = Mathf.Abs(Vector2.Distance(slots[0].transform.localPosition, slots[1].transform.localPosition));
+        }
+        public bool CanAdd(Vector2Int size, Slot slot)
         {
             if (!slot.isVacant) return false;
 
-            List<Slot> reqSlots = RequiredSlots(slot, item.model.size);
+            List<Slot> reqSlots = RequiredSlots(slot, size);
 
-            if (reqSlots.Count < item.model.size.x * item.model.size.y || reqSlots.Any(s => !s.isVacant))
+            if (reqSlots.Count < size.x * size.y || reqSlots.Any(s => !s.isVacant))
             {
                 Debug.Log("Not enough slots for this item!");
                 return false;
@@ -153,5 +162,33 @@ namespace Inventory
             requiredSlots = requiredSlots.Distinct().ToList();
             return requiredSlots;
         }
+        public Slot FindNearestSuitableSlot(Slot _slot, Vector2Int size)
+        {
+            List<Slot> neighbourSlots = new List<Slot>();
+            Vector3 _slotPos = _slot.transform.localPosition;
+
+            foreach (var slot in slots)
+            {
+                Vector3 slotPos = slot.transform.localPosition;
+                if ((slotPos.x == _slotPos.x
+                    || slotPos.x == _slotPos.x + localSlotSize
+                    || slotPos.x == _slotPos.x - localSlotSize)
+                    && (slotPos.y == _slotPos.y + localSlotSize
+                    || slotPos.y == _slotPos.y - localSlotSize))
+                {
+                    neighbourSlots.Add(slot);
+                }
+                if ((slotPos.y == _slotPos.y 
+                    || slotPos.y == _slotPos.y + localSlotSize
+                    || slotPos.y == _slotPos.y - localSlotSize)
+                    && (slotPos.x == _slotPos.x + localSlotSize
+                    || slotPos.x == _slotPos.x - localSlotSize))
+                {
+                    neighbourSlots.Add(slot);
+                }
+            }
+            return neighbourSlots.FirstOrDefault(s => CanAdd(size, s));
+        }
+        #endregion
     }
 }

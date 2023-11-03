@@ -30,6 +30,7 @@ namespace Inventory
         }
         public void OnBeginDrag(PointerEventData eventData)
         {
+            transform.SetAsLastSibling();
             if (inventory == null) inventory = GetComponentInParent<InventoryController>();
             inventory.RemoveItemFromInventory(this);
             canvasGroup.blocksRaycasts = false;
