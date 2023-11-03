@@ -19,6 +19,10 @@ namespace Inventory
             canvas = GetComponentInParent<Canvas>();
             canvasGroup = GetComponent<CanvasGroup>();
         }
+        private void OnEnable()
+        {
+            canvasGroup.blocksRaycasts = true;
+        }
         public override void Initialize(ItemInfo itemInfo, float condition)
         {
             base.Initialize(itemInfo, condition); 
@@ -26,11 +30,13 @@ namespace Inventory
         }
         public void OnBeginDrag(PointerEventData eventData)
         {
+            if (inventory == null) inventory = GetComponentInParent<InventoryController>();
             inventory.RemoveItemFromInventory(this);
             canvasGroup.blocksRaycasts = false;
         }
         public void OnDrag(PointerEventData eventData)
         {
+            if (canvas == null) canvas = GetComponentInParent<Canvas>();
             rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
         }
 
@@ -42,10 +48,12 @@ namespace Inventory
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (inventory == null) inventory = GetComponentInParent<InventoryController>();
             inventory.ReturnItemToContainer(this);
         }
         private void ReturnToSlot()
         {
+            if (inventory == null) inventory = GetComponentInParent<InventoryController>();
             inventory.AddItemToInventory(this, inventory.model.itemsInInventory[model]);
         }
     }

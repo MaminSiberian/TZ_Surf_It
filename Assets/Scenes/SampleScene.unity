@@ -3963,7 +3963,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &549709007
 GameObject:
@@ -9038,7 +9038,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfItems: 4
-  itemPrefab: {fileID: 1032531658790600566, guid: 1d69442c982c6234e99401d7b2e20af2, type: 3}
   pool: {fileID: 834055267}
   grid: {fileID: 955432212}
 --- !u!224 &1344604090 stripped
@@ -13703,7 +13702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5895dd3b8dc1a4c94d5c7ba78a9d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 8841371992940926772, guid: 1cf6197875b11ae49b28b70501688fc4, type: 3}
   grid: {fileID: 130283718}
   itemParent: {fileID: 546308425}
 --- !u!224 &2109376036 stripped

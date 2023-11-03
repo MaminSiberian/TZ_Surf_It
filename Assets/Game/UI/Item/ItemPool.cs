@@ -27,7 +27,7 @@ namespace UI
         public Inventory.ItemController GetInventoryItem(Transform parent = null)
         {
             var item = inventoryPool.GetObject();
-            item.transform.parent = parent;
+            item.transform.SetParent(parent);
             item.transform.localPosition = Vector3.zero;
             item.transform.localScale = Vector3.one;
             return item;

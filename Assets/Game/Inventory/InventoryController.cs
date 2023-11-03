@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 namespace Inventory
 {
     public class InventoryController : MonoBehaviour
     {
-        [SerializeField] private ItemController itemPrefab;
         [SerializeField] private GameObject grid;
         [SerializeField] private Transform itemParent;
 
@@ -16,10 +16,12 @@ namespace Inventory
 
         private float localSlotSize;
         private ItemsContainer.ItemsContainer container;
+        private UI.ItemPool pool;
 
         private void Start()
         {
             container = FindAnyObjectByType<ItemsContainer.ItemsContainer>();
+            pool = FindAnyObjectByType<UI.ItemPool>();
             model = new InventoryModel();
             GetSlots();
             LoadInventory();
@@ -27,12 +29,12 @@ namespace Inventory
         public void AddItemToInventory(UI.ItemController item, Slot slot)
         {
             var newItem = CreateItem(item.model.itemInfo, item.model.condition, slot.transform);
-
             item.Deactivate();
             model.RemoveItem(item.model);
 
             items.Add(newItem);
             model.AddItem(newItem.model, slot);
+
             newItem.transform.SetParent(itemParent);
             RequiredSlots(slot, newItem.model.size).ForEach(slot => slot.OccupySlot());
             items.ForEach(i => Debug.Log(i));
@@ -45,7 +47,7 @@ namespace Inventory
         }
         public void ClearInventory()
         {
-            items.ForEach(i => Destroy(i.gameObject));
+            items.ForEach(i => i.Deactivate());
             slots.ForEach(s => s.ReleaseSlot());
             items.Clear();
             model.ClearInventory();
@@ -94,7 +96,7 @@ namespace Inventory
             container.AddItem(item.model.itemInfo, item.model.condition);
             RemoveItemFromInventory(item);
             model.RemoveItem(item.model);
-            Destroy(item.gameObject);
+            item.Deactivate();
         }
         private void GetSlots()
         {
@@ -105,7 +107,8 @@ namespace Inventory
         }
         private ItemController CreateItem(ItemInfo info, float condition, Transform parent)
         {
-            var itemObj = Instantiate(itemPrefab, parent);
+            var itemObj = pool.GetInventoryItem(parent);
+            itemObj.gameObject.SetActive(true);
             itemObj.Initialize(info, condition);
             itemObj.transform.localPosition = Vector3.zero;
 

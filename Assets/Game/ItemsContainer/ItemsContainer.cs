@@ -9,7 +9,6 @@ namespace ItemsContainer
     public class ItemsContainer : MonoBehaviour
     {
         [SerializeField] private int numberOfItems = 4;
-        [SerializeField] private ItemController itemPrefab;
         [SerializeField] private UI.ItemPool pool;
         [SerializeField] private GameObject grid;
 
