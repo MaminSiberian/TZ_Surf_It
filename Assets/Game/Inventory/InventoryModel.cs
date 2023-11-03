@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
 
 namespace Inventory
 {
@@ -9,6 +11,7 @@ namespace Inventory
         public void AddItem(UI.ItemModel item, Slot slot)
         {
             itemsInInventory.Add(item, slot);
+            itemsInInventory = itemsInInventory.Distinct().ToDictionary(x => x.Key, x => x.Value);
         }
         public void RemoveItem(UI.ItemModel item)
         {

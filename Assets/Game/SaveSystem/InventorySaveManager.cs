@@ -4,12 +4,12 @@ public static class InventorySaveManager
 {
     private const string DATA_KEY = "InvData.json";
 
-    public static void SaveInventoryData(Dictionary<UI.ItemModel, Inventory.Slot> data)
+    public static void SaveInventoryData(List<ItemData> data)
     {
         JsonSaveSystem.SaveToFile(data, DATA_KEY);
     }
-    public static Dictionary<UI.ItemModel, Inventory.Slot> LoadInventoryData()
+    public static List<ItemData> LoadInventoryData()
     {
-        return JsonSaveSystem.LoadFromFile<Dictionary<UI.ItemModel, Inventory.Slot>>(DATA_KEY);
+        return JsonSaveSystem.LoadFromFile<List<ItemData>>(DATA_KEY);
     }
 }

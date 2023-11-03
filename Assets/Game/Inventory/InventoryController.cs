@@ -28,11 +28,13 @@ namespace Inventory
         public void AddItemToInventory(UI.ItemController item, Slot slot)
         {
             var newItem = CreateItem(item.model.itemInfo, item.model.condition, slot.transform);
+            Destroy(item.gameObject);
+            model.RemoveItem(item.model);
+
             items.Add(newItem);
             model.AddItem(newItem.model, slot);
             newItem.transform.SetParent(itemParent);
-            RequiredSlots(slot, item.model.size).ForEach(slot => slot.OccupySlot());
-            Destroy(item.gameObject);
+            RequiredSlots(slot, newItem.model.size).ForEach(slot => slot.OccupySlot());
             items.ForEach(i => Debug.Log(i));
         }
         public void RemoveItemFromInventory(ItemController item)
@@ -50,23 +52,40 @@ namespace Inventory
         }
         public void SaveInventory()
         {
-            InventorySaveManager.SaveInventoryData(model.itemsInInventory);
+            List<ItemData> data = new List<ItemData>();
+
+            foreach (var item in model.itemsInInventory)
+            {
+                ItemData itemData = new ItemData()
+                {
+                    itemName = item.Key.itemName,
+                    size = item.Key.size,
+                    condition = item.Key.condition,
+                    slotPosition = item.Value.transform.localPosition
+                };
+                data.Add(itemData);
+            }
+
+            InventorySaveManager.SaveInventoryData(data);
         }
         public void LoadInventory()
         {
             ClearInventory();
             var data = InventorySaveManager.LoadInventoryData();
 
+            var info = Resources.LoadAll<ItemInfo>("ItemInfo/");
+
             for (int i = 0; i < data.Count; i++)
             {
-                var key = data.ElementAt(i).Key;
-                var value = data.ElementAt(i).Value;
-                var item = CreateItem(key.itemInfo, key.condition, value.transform);
+                var itemData = data[i];
+                Slot slot = slots.FirstOrDefault(s => (Vector2)s.transform.localPosition == itemData.slotPosition);
+                ItemInfo itemInfo = info.FirstOrDefault(i => i.itemName == itemData.itemName);
+                var item = CreateItem(itemInfo, itemData.condition, slot.transform);
 
                 items.Add(item);
-                model.AddItem(key, value);
+                model.AddItem(item.model, slot);
                 item.transform.SetParent(itemParent);
-                RequiredSlots(value, item.model.size).ForEach(slot => slot.OccupySlot());
+                RequiredSlots(slot, item.model.size).ForEach(slot => slot.OccupySlot());
             }
 
         }
