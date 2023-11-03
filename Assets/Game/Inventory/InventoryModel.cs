@@ -1,15 +1,14 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Inventory
 {
     public class InventoryModel
     {
-        public Dictionary<UI.ItemModel, Vector2> itemsInInventory = new Dictionary<UI.ItemModel, Vector2>();
+        public Dictionary<UI.ItemModel, Slot> itemsInInventory = new Dictionary<UI.ItemModel, Slot>();
         
-        public void AddItem(UI.ItemModel item, Vector2 position)
+        public void AddItem(UI.ItemModel item, Slot slot)
         {
-            itemsInInventory.Add(item, position);
+            itemsInInventory.Add(item, slot);
         }
         public void RemoveItem(UI.ItemModel item)
         {

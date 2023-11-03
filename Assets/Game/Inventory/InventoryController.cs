@@ -15,9 +15,11 @@ namespace Inventory
         private List<ItemController> items = new List<ItemController>();
 
         private float localSlotSize;
+        private ItemsContainer.ItemsContainer container;
 
         private void Start()
         {
+            container = FindAnyObjectByType<ItemsContainer.ItemsContainer>();
             model = new InventoryModel();
             GetSlots();
             //LoadInventory();
@@ -31,17 +33,16 @@ namespace Inventory
             }
             var newItem = CreateItem(item.model.itemInfo, item.model.condition, slot.transform);
             items.Add(newItem);
-            model.AddItem(item.model, item.transform.localPosition);
-
+            model.AddItem(newItem.model, slot);
             newItem.transform.SetParent(itemParent);
-
             RequiredSlots(slot, item.model.size).ForEach(slot => slot.OccupySlot());
             Destroy(item.gameObject);
         }
-        public void RemoveItemFromInventory(UI.ItemController item, Slot slot)
+        public void RemoveItemFromInventory(ItemController item)
         {
-            model.RemoveItem(item.model);
+            Slot slot = model.itemsInInventory[item.model];
             RequiredSlots(slot, item.model.size).ForEach(slot => slot.ReleaseSlot());
+            model.RemoveItem(item.model);
             Destroy(item.gameObject);
         }
         public void ClearInventory()
@@ -59,12 +60,11 @@ namespace Inventory
         {
             ClearInventory();
             //load
-            UpdateInventory();
         }
-        private void UpdateInventory()
+        public void ReturnItemToContainer(ItemController item)
         {
-            model.ClearInventory();
-            items.ForEach(item => model.AddItem(item.model, item.transform.localPosition));
+            container.AddItem(item.model.itemInfo, item.model.condition);
+            RemoveItemFromInventory(item);
         }
         private void GetSlots()
         {
@@ -91,9 +91,13 @@ namespace Inventory
 
             List<Slot> reqSlots = RequiredSlots(slot, item.model.size);
 
-            if (reqSlots.Count < item.model.size.x * item.model.size.y) return false;
+            if (reqSlots.Count < item.model.size.x * item.model.size.y || reqSlots.Any(s => !s.isVacant))
+            {
+                Debug.Log("Not enough slots for this item!");
+                return false;
+            }
 
-            return !reqSlots.Any(s => !s.isVacant);
+            return true;
         }
         private List<Slot> RequiredSlots(Slot firstSlot, Vector2Int size)
         {

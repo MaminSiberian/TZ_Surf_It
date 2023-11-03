@@ -7,16 +7,18 @@ namespace Inventory
     [RequireComponent(typeof(CanvasGroup))]
     public class ItemController : UI.ItemController, /*IDragHandler, IBeginDragHandler, IEndDragHandler,*/ IPointerClickHandler
     {
+        private InventoryController inventory;
         /*private RectTransform rectTransform;
         private Canvas canvas;
-        private CanvasGroup canvasGroup;
+        private CanvasGroup canvasGroup;*/
 
         protected void Awake()
         {
-            rectTransform = GetComponent<RectTransform>();
+            inventory = GetComponentInParent<InventoryController>();
+            /*rectTransform = GetComponent<RectTransform>();
             canvas = GetComponentInParent<Canvas>();
-            canvasGroup = GetComponent<CanvasGroup>();
-        }*/
+            canvasGroup = GetComponent<CanvasGroup>();*/
+        }
         public override void Initialize(ItemInfo itemInfo, float condition)
         {
             base.Initialize(itemInfo, condition); 
@@ -42,7 +44,7 @@ namespace Inventory
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log("Return item to container");
+            inventory.ReturnItemToContainer(this);
         }
     }
 }

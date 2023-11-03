@@ -13,23 +13,28 @@ namespace ItemsContainer
         [SerializeField] private GameObject grid;
 
         private List<Slot> slots = new List<Slot>();
-        private float startCondition = 1f;
 
         private void Start()
         {
             GetSlots();
             CreateRandomItems();
         }
+        public void AddItem(ItemInfo info, float condition)
+        {
+            if (!slots.Any(s => s.isVacant)) return;
+
+            Slot slot = slots.FirstOrDefault(s => s.isVacant);
+            CreateItem(info, condition, slot.transform);
+            slot.OccupySlot();
+        }
         [Button]
-        private void CreateRandomItems()
+        public void CreateRandomItems()
         {
             var items = Resources.LoadAll<ItemInfo>("ItemInfo/");
 
             for (int i = 0; i < numberOfItems; i++)
             {
-                if (i >= slots.Count) break;
-                CreateItem(items[Random.Range(0, items.Length)], startCondition, slots[i].transform);
-                slots[i].OccupySlot();
+                AddItem(items[Random.Range(0, items.Length)], Random.Range(0, 100) / 100f);
             }
         }
         private ItemController CreateItem(ItemInfo info, float condition, Transform parent)
